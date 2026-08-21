@@ -2,11 +2,20 @@
   "framework": "nextjs",
   "buildCommand": "npx prisma generate && next build",
   "ignoreCommand": "git diff --quiet HEAD^ HEAD .",
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    }
+  ],
   "env": {
     "NEXT_PUBLIC_STELLAR_NETWORK": "testnet",
     "NEXT_PUBLIC_STELLAR_NETWORK_PASSPHRASE": "Test SDF Network ; September 2015",
     "NEXT_PUBLIC_SOROBAN_RPC_URL": "https://soroban-testnet.stellar.org",
-    "NEXT_PUBLIC_ESCROW_CONTRACT_ID": "CBUBO5S57IZTIWU4BQXGJP2VAUD7CK7N5EXWFZQGKGMFZENL2F5Z4DTT",
-    "NEXT_PUBLIC_USDC_TOKEN_ID": "CBIELTK6YBZJU5UP2WWQEUCYKLPU6AUNZ2BQ4WWFEIE3USCIHMXQDAMA"
+    "NEXT_PUBLIC_ESCROW_CONTRACT_ID": "CBUBO5S57IZTIWU4BQXGJP2VAUD7CK7N5EXWFZQGKGMFZENL2F5Z4DTT"
   }
 }
