@@ -226,6 +226,16 @@ All transactions on Stellar Testnet — verifiable on [stellar.expert](https://s
 | 2 | `submit_milestone` | `80be3477...9e8e` | [↗](https://stellar.expert/explorer/testnet/tx/80be3477cefd90264dce54029dde83f8d137ae4f907513e269c2a3cd14d79e8e) |
 | 3 | `approve_milestone` | `cacb2332...35e5` | [↗](https://stellar.expert/explorer/testnet/tx/cacb23321864aeda54cea268dc556406b864f4c5a5a7893f6b6aaa322ac735e5) |
 
+### User 6 — Om Ozharkar · [Job #50](https://borderpay-azure.vercel.app/jobs/50)
+
+**Wallet:** `GBCWPSZ3WMH4LTC5P22H3VUZ6NPWC52PAF676BDEC4VCSGEIKQ4EOQKB`
+
+| # | Action | Tx Hash | Explorer |
+|---|--------|---------|----------|
+| 1 | `create_job` | `ab2cb8ef...5e65` | [↗](https://stellar.expert/explorer/testnet/tx/ab2cb8efb400d7cefb40a88b28798916a7468c250e2175ef2a0188fbbe065e65) |
+| 2 | `submit_milestone` | `985921ed...c1f` | [↗](https://stellar.expert/explorer/testnet/tx/985921ed3a15cdf7966d726664ebbafe1c5068fe7badd27a52516891f2c4bc1f) |
+| 3 | `approve_milestone` | `0071f811...4d73` | [↗](https://stellar.expert/explorer/testnet/tx/0071f811eeabf88b71251afc32cc0f579f93d31a528ae1fd35cc43cf01524d73) |
+
 ---
 
 ## Known Limitations & Future Work
