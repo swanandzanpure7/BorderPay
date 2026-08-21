@@ -256,6 +256,26 @@ All transactions on Stellar Testnet — verifiable on [stellar.expert](https://s
 | 2 | `submit_milestone` | `7cac78ad...7d2d` | [↗](https://stellar.expert/explorer/testnet/tx/7cac78ad72bf9788d6cf75e841a4492c7f20ae34d859d2798a769673e0887d2d) |
 | 3 | `approve_milestone` | `bcac46c9...4d82` | [↗](https://stellar.expert/explorer/testnet/tx/bcac46c9eceb20fda07ffad1908a5cdb6847226983f9fecf655378c8d96d4d82) |
 
+### User 9 — Ashutosh Nivagunne · [Job #53](https://borderpay-azure.vercel.app/jobs/53)
+
+**Wallet:** `GBUAIB232YEQARMJEH7DLLMYJUYPT7OZDVM3PETYNPLGCB6JJDYA2GVT`
+
+| # | Action | Tx Hash | Explorer |
+|---|--------|---------|----------|
+| 1 | `create_job` | `83179052...2a09` | [↗](https://stellar.expert/explorer/testnet/tx/8317905226d35418ccf1c53905a7a150e04b4013ffa7320183b52ab3e0c82a09) |
+| 2 | `submit_milestone` | `f056eca9...abc8` | [↗](https://stellar.expert/explorer/testnet/tx/f056eca9d8b5f909bdbab79786c6b334b8b73dc7ed3ca816faef9c31fb2aabc8) |
+| 3 | `approve_milestone` | `3291b045...e4de` | [↗](https://stellar.expert/explorer/testnet/tx/3291b045a969a69927bb61e7e592d0027bcfd863a194fb4b84010f008fa6e4de) |
+
+### User 10 — Krrish Khandelwal · [Job #54](https://borderpay-azure.vercel.app/jobs/54)
+
+**Wallet:** `GB22L36R66FU6V4K746OSS53JAMHF5B4PI2T42AEQUQOXFTFL5CSODBD`
+
+| # | Action | Tx Hash | Explorer |
+|---|--------|---------|----------|
+| 1 | `create_job` | `dabe11a2...775b` | [↗](https://stellar.expert/explorer/testnet/tx/dabe11a24e04f5a6365d36adc990b623192541326ce08665cbce6b444017775b) |
+| 2 | `submit_milestone` | `ded1b61d...a6e` | [↗](https://stellar.expert/explorer/testnet/tx/ded1b61d647bb48966660ba375bce39d048e2dc9ab7edfb59ee163f175ec5a6e) |
+| 3 | `approve_milestone` | `43b26bde...826d` | [↗](https://stellar.expert/explorer/testnet/tx/43b26bdef52ae9f7f3d232c6d8c0f4c6d1e1ebde47c2eeec7b83fde54287826d) |
+
 ---
 
 ## Known Limitations & Future Work
