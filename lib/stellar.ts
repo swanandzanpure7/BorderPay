@@ -44,7 +44,11 @@ export const ESCROW_CONTRACT_ID =
 export const USDC_TOKEN_ID =
   process.env.NEXT_PUBLIC_USDC_TOKEN_ID || "";
 
-export const server = new SorobanRpc.Server(RPC_URL, { allowHttp: false });
+/** Max milestone count enforced by the contract */
+export const MAX_MILESTONES = 50;
+
+/** Min USDC per milestone in display units */
+export const MIN_MILESTONE_USDC = 0.01;
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
