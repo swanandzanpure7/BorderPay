@@ -236,6 +236,16 @@ All transactions on Stellar Testnet — verifiable on [stellar.expert](https://s
 | 2 | `submit_milestone` | `985921ed...c1f` | [↗](https://stellar.expert/explorer/testnet/tx/985921ed3a15cdf7966d726664ebbafe1c5068fe7badd27a52516891f2c4bc1f) |
 | 3 | `approve_milestone` | `0071f811...4d73` | [↗](https://stellar.expert/explorer/testnet/tx/0071f811eeabf88b71251afc32cc0f579f93d31a528ae1fd35cc43cf01524d73) |
 
+### User 7 — Ayush Verma · [Job #51](https://borderpay-azure.vercel.app/jobs/51)
+
+**Wallet:** `GD5VMRKMLYIEJDVFGAQWY5ETREHMTMP7VH62XWVAU3CTWA562ICBNCPZ`
+
+| # | Action | Tx Hash | Explorer |
+|---|--------|---------|----------|
+| 1 | `create_job` | `368ca6b2...74ee` | [↗](https://stellar.expert/explorer/testnet/tx/368ca6b25ae6e7dbdf7ef64582682dd47506a759cc8c3eaa05ae68f17f8274ee) |
+| 2 | `submit_milestone` | `37f66edb...d5bb` | [↗](https://stellar.expert/explorer/testnet/tx/37f66edb164cac658a1ab85176c9146af7ea01ca3a9bdfb3c8c22062627dd5bb) |
+| 3 | `approve_milestone` | `892b0aae...1039` | [↗](https://stellar.expert/explorer/testnet/tx/892b0aae4ca44ad4963dda02e2ad5d1c576125f12588a0c1d8e12ad5206a1039) |
+
 ---
 
 ## Known Limitations & Future Work
