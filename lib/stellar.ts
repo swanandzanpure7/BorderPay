@@ -571,17 +571,25 @@ export async function listJobsByAddress(address: string): Promise<bigint[]> {
 
 export const STELLAR_LIB_VERSION = "3.0.0"; // cache bust
 
+/** Convert stroops (1/10,000,000 of a unit) to display USDC string */
 export function stroopsToUsdc(stroops: bigint): string {
   return (Number(stroops) / 10_000_000).toFixed(2);
 }
 
+/** Convert a USDC display amount (e.g. 1.5) to stroops */
 export function usdcToStroops(usdc: number): bigint {
   return BigInt(Math.round(usdc * 10_000_000));
 }
 
+/** Truncate a Stellar address for display */
 export function truncateAddress(addr: string): string {
   if (!addr) return "";
   return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
+}
+
+/** Format a bigint stroops amount as "$X.XX USDC" */
+export function formatUsdc(stroops: bigint): string {
+  return `${stroopsToUsdc(stroops)} USDC`;
 }
 
 export function parseContractError(err: unknown): string {
