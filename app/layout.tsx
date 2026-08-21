@@ -8,6 +8,14 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "BorderPay — Global Freelance Payments on Stellar",
+  description: "Milestone-based escrow for global freelancers. Powered by Soroban smart contracts on Stellar.",
+  keywords: ["Stellar", "Soroban", "escrow", "freelance", "USDC", "blockchain", "payments"],
+  openGraph: {
+    title: "BorderPay",
+    description: "Trustless milestone-based escrow for global freelancers on Stellar.",
+    type: "website",
+    url: "https://borderpay-azure.vercel.app",
+  },
   description:
     "Fund cross-border freelance work with milestone-based escrow on the Stellar blockchain. Secure, fast, and non-custodial.",
   openGraph: {
