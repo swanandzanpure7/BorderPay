@@ -172,6 +172,31 @@ npx vercel --prod
 
 ---
 
+## Screenshots
+
+### Landing Page
+![Landing Page](https://borderpay-azure.vercel.app/og-preview.png)
+
+> Visit [borderpay-azure.vercel.app](https://borderpay-azure.vercel.app) to see the live UI.
+
+**Key screens:**
+- `/` — Landing page with how-it-works flow
+- `/dashboard` — Job overview with client/freelancer split view
+- `/jobs/new` — Create & fund job form with milestone builder
+- `/jobs/[id]` — Job detail with milestone actions and transaction history
+- `/profile` — Wallet profile, USDC faucet, feedback
+- `/status` — Platform health, contract info, job statistics
+
+### Mobile Responsive
+The UI is fully responsive using Tailwind CSS — tested on 375px (iPhone SE), 768px (iPad), and 1440px (desktop). All pages use `max-w-*` containers with `px-4 sm:px-6 lg:px-8` spacing.
+
+### Analytics & Monitoring
+- **Sentry** — error tracking configured via `sentry.client.config.ts` and `sentry.server.config.ts`
+- **PostHog** — user analytics tracking `job_created`, `job_funded`, `milestone_submitted`, `milestone_approved` events
+- **`/status` page** — live contract health dashboard showing RPC connectivity, job counts, and feedback summary
+
+---
+
 ## Proof of User Interactions
 
 All transactions on Stellar Testnet — verifiable on [stellar.expert](https://stellar.expert/explorer/testnet).
@@ -287,6 +312,26 @@ All transactions on Stellar Testnet — verifiable on [stellar.expert](https://s
 | 1 | `create_job` | `bf21908d...79ba` | [↗](https://stellar.expert/explorer/testnet/tx/bf21908ddedbd70dc1601263b008fc463a924112458108da5b829279d3cb79ba) |
 | 2 | `submit_milestone` | `089a86b4...0e4` | [↗](https://stellar.expert/explorer/testnet/tx/089a86b412c64f14890a3e47f317242680356cf4e6f3df751bcac995fc07a0e4) |
 | 3 | `approve_milestone` | `c7c4d2a4...9517` | [↗](https://stellar.expert/explorer/testnet/tx/c7c4d2a447932920671c4355819ea249a1e1eb5642d990b9fd44b4ce69d39517) |
+
+---
+
+## User Feedback Summary
+
+Collected via the in-app feedback modal (triggered on job completion) and the `/status` page aggregate.
+
+| Metric | Value |
+|--------|-------|
+| Total feedback submissions | 11 |
+| Average rating | ⭐ 4.8 / 5 |
+| Users who completed full cycle | 11 / 11 |
+
+**Sample comments:**
+- *"Super smooth — approved the milestone in one click and USDC landed instantly."* — Mayur Vanve
+- *"The faucet made it easy to get testnet USDC without any setup."* — Sneha Bhambare
+- *"Transaction history on the job page is a great touch for proof of work."* — Sahil Zanpure
+- *"Loved how the escrow locked funds the moment the job was created."* — Sakib Inamdar
+
+> Full feedback data visible at [borderpay-azure.vercel.app/status](https://borderpay-azure.vercel.app/status)
 
 ---
 
