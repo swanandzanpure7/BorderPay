@@ -1,0 +1,40 @@
+{
+  "name": "borderpay-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "build:fast": "next build --no-lint",
+    "start": "next start",
+    "lint": "next lint",
+    "postinstall": "prisma generate",
+    "db:migrate": "prisma migrate deploy",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio"
+  },
+  "dependencies": {
+    "@creit.tech/stellar-wallets-kit": "^2.5.0",
+    "@prisma/client": "^5.22.0",
+    "@sentry/nextjs": "^9.47.1",
+    "@stellar/freighter-api": "^5.0.0",
+    "@stellar/stellar-sdk": "^12.3.0",
+    "@tanstack/react-query": "^5.101.4",
+    "next": "15.3.6",
+    "posthog-js": "^1.417.1",
+    "react": "^18",
+    "react-dom": "^18",
+    "zustand": "^5.0.15"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "^15.3.0",
+    "postcss": "^8",
+    "prisma": "^5.22.0",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}

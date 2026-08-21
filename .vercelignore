@@ -1,0 +1,7 @@
+node_modules
+.git
+contracts/target
+borderpay-app
+.next
+*.wasm
+tsconfig.tsbuildinfo

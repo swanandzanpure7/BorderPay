@@ -1,0 +1,104 @@
+// Prisma schema for BorderPay off-chain metadata
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  walletAddress String  @unique
+  displayName  String?
+  bio          String?
+  avatarUrl    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  jobsAsClient     JobMeta[] @relation("ClientJobs")
+  jobsAsFreelancer JobMeta[] @relation("FreelancerJobs")
+  feedbackGiven    Feedback[] @relation("FeedbackGiver")
+  feedbackReceived Feedback[] @relation("FeedbackReceiver")
+}
+
+model JobMeta {
+  id               String   @id @default(uuid())
+  onChainJobId     String   // Stringified u64 from contract
+  contractId       String   // Soroban contract address
+  title            String
+  description      String?
+  clientAddress    String
+  freelancerAddress String
+  tokenAddress     String
+  totalAmountStroops String  // Stored as string to avoid BigInt issues
+  network          String   @default("testnet")
+  createTxHash     String?
+  fundTxHash       String?
+  status           String   @default("Created")
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  client     User @relation("ClientJobs", fields: [clientAddress], references: [walletAddress], onDelete: Cascade)
+  freelancer User @relation("FreelancerJobs", fields: [freelancerAddress], references: [walletAddress], onDelete: Cascade)
+
+  milestones MilestoneMeta[]
+  feedback   Feedback[]
+  txHistory  TxHistory[]
+
+  @@unique([onChainJobId])
+  @@index([clientAddress])
+  @@index([freelancerAddress])
+}
+
+model MilestoneMeta {
+  id            String   @id @default(uuid())
+  jobMetaId     String
+  milestoneIndex Int
+  description   String
+  amountStroops String
+  status        String   @default("Pending")
+  submitTxHash  String?
+  approveTxHash String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  job JobMeta @relation(fields: [jobMetaId], references: [id], onDelete: Cascade)
+
+  @@unique([jobMetaId, milestoneIndex])
+  @@index([jobMetaId])
+}
+
+model TxHistory {
+  id          String   @id @default(uuid())
+  jobMetaId   String
+  txHash      String   @unique
+  action      String   // create_job, fund_job, submit_milestone, etc.
+  actorAddress String
+  metadata    Json?
+  createdAt   DateTime @default(now())
+
+  job JobMeta @relation(fields: [jobMetaId], references: [id], onDelete: Cascade)
+
+  @@index([jobMetaId])
+  @@index([actorAddress])
+}
+
+model Feedback {
+  id            String   @id @default(uuid())
+  jobMetaId     String
+  giverAddress  String
+  receiverAddress String
+  rating        Int      // 1-5
+  comment       String?
+  createdAt     DateTime @default(now())
+
+  job      JobMeta @relation(fields: [jobMetaId], references: [id], onDelete: Cascade)
+  giver    User    @relation("FeedbackGiver", fields: [giverAddress], references: [walletAddress], onDelete: Cascade)
+  receiver User    @relation("FeedbackReceiver", fields: [receiverAddress], references: [walletAddress], onDelete: Cascade)
+
+  @@unique([jobMetaId, giverAddress])
+  @@index([receiverAddress])
+}
