@@ -168,6 +168,8 @@ npx vercel --prod
 
 🌐 **[borderpay-azure.vercel.app](https://borderpay-azure.vercel.app)**
 
+📹 **[Demo Video](https://www.loom.com/share/7fabafb4e39c4998a7f658df07ffed69)** — full walkthrough: wallet connect → create job → fund escrow → submit milestone → approve & release payment
+
 ---
 
 ## Proof of User Interactions
