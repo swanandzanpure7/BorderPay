@@ -4,48 +4,36 @@
 
 **Decision:** One contract managing all jobs via an on-chain `Job` map keyed by `u64` ID.
 
-**Rationale:** Per-contract deployment on Stellar Testnet costs extra in storage fees. A single auditable contract is also simpler to reason about. Factory pattern is noted as future work for mainnet at high volume.
+**Rationale:** Simpler deployment, lower gas overhead for testnet. Factory pattern would require deploying a new contract per job — unnecessary complexity for MVP.
 
 ---
 
-## Decision 2: Stroops for all on-chain amounts
+## Decision 2: Source-account auth instead of signAuthEntry
 
-**Decision:** All amounts are `i128` in stroops (10,000,000 stroops = 1 USDC). UI converts with `stroopsToUsdc()` / `usdcToStroops()`.
+**Decision:** Rewrite Soroban auth entries from `sorobanCredentialsAddress` to `sorobanCredentialsSourceAccount` before passing XDR to Freighter.
 
----
-
-## Decision 3: soroban-sdk version pinned to 25.x
-
-**Decision:** Used `soroban-sdk = "25"` — the version the Stellar CLI 26 templates ship with.
-
-**Background:** SDK versions 20–22 had a transitive `ed25519-dalek v3` incompatibility in testutils that broke `ChaCha20Rng: CryptoRng`. SDK 25 (shipped with Stellar CLI 26) resolves this entirely.
+**Rationale:** Freighter's transaction display crashes with "Bad union switch: 4" when auth entries contain `SCV_LEDGER_KEY_CONTRACT_INSTANCE` footprint data. Source-account credentials are validated by the transaction signature — no separate auth signing needed.
 
 ---
 
-## Decision 4: Off-chain metadata via Next.js API routes + Prisma
+## Decision 3: Off-chain metadata DB (Supabase + Prisma)
 
-**Decision:** Job titles/descriptions in Postgres (Supabase). On-chain milestones store short descriptions (≤200 chars). Off-chain sync happens after on-chain creation via `POST /api/jobs`.
+**Decision:** Store job titles, tx hashes, and feedback in Postgres, not on-chain.
 
----
-
-## Decision 5: Feedback stored entirely off-chain
-
-**Decision:** Ratings + comments go to Postgres only. `/api/feedback` provides aggregate stats for the `/status` page. No on-chain cost, allows editing.
+**Rationale:** On-chain storage is expensive and unnecessary for non-financial metadata. The contract stores only the financial state (amounts, milestones, addresses). Everything else lives off-chain with the contract as the source of truth for financial data.
 
 ---
 
-## Decision 6: Freighter as primary wallet (Freighter-only MVP)
+## Decision 4: Custom USDC token SAC for testnet
 
-**Decision:** Freighter-only for MVP using `@stellar/freighter-api` v6. Stellar Wallets Kit (Albedo, xBull) noted as future work.
+**Decision:** Deploy a custom USDC-like SAC token (`CDRIM3...`) instead of using Circle's testnet USDC.
 
----
-
-## Decision 7: Next.js 15 over 14
-
-**Decision:** Upgraded from Next.js 14 to 15 to ensure SWC native binary compatibility with Node.js 24 on Windows x64.
+**Rationale:** Circle's testnet USDC issuer key is not accessible, so we can't programmatically fund users. A custom SAC gives full control for the in-app faucet (`/profile` → "Get Test USDC").
 
 ---
 
-## Decision 8: WatchWalletChanges instantiated as class (not static)
+## Decision 5: Zustand for wallet state (not React Context)
 
-**Decision:** `WatchWalletChanges` in freighter-api v6 is a class — instantiate with `new WatchWalletChanges(3000)`, call `.watch(cb)`, stop with `.stop()`.
+**Decision:** Use Zustand store for all wallet state shared across components.
+
+**Rationale:** React Context causes re-renders in every consumer on every update. Zustand is subscription-based — components only re-render when their specific slice changes. Eliminates the "wallet flickering" issue caused by multiple components each running their own async Freighter check.
