@@ -246,6 +246,16 @@ All transactions on Stellar Testnet — verifiable on [stellar.expert](https://s
 | 2 | `submit_milestone` | `37f66edb...d5bb` | [↗](https://stellar.expert/explorer/testnet/tx/37f66edb164cac658a1ab85176c9146af7ea01ca3a9bdfb3c8c22062627dd5bb) |
 | 3 | `approve_milestone` | `892b0aae...1039` | [↗](https://stellar.expert/explorer/testnet/tx/892b0aae4ca44ad4963dda02e2ad5d1c576125f12588a0c1d8e12ad5206a1039) |
 
+### User 8 — Aditya Davane · [Job #52](https://borderpay-azure.vercel.app/jobs/52)
+
+**Wallet:** `GDARNAYCBQB4OQKEEEZ6W7ULZPB72TEAL6U6BO2DLCSFH6HIZGMA5V5S`
+
+| # | Action | Tx Hash | Explorer |
+|---|--------|---------|----------|
+| 1 | `create_job` | `9f560d00...8bb2` | [↗](https://stellar.expert/explorer/testnet/tx/9f560d003318772c7ec07dc6bc880c14ed70a2021991e84d85a561fcda9908bb2) |
+| 2 | `submit_milestone` | `7cac78ad...7d2d` | [↗](https://stellar.expert/explorer/testnet/tx/7cac78ad72bf9788d6cf75e841a4492c7f20ae34d859d2798a769673e0887d2d) |
+| 3 | `approve_milestone` | `bcac46c9...4d82` | [↗](https://stellar.expert/explorer/testnet/tx/bcac46c9eceb20fda07ffad1908a5cdb6847226983f9fecf655378c8d96d4d82) |
+
 ---
 
 ## Known Limitations & Future Work
@@ -255,3 +265,4 @@ All transactions on Stellar Testnet — verifiable on [stellar.expert](https://s
 - **Factory pattern**: Single contract for all jobs. High-volume mainnet deployment would benefit from per-job contracts.
 - **Notifications**: No email/push notifications when milestone status changes.
 - **File attachments**: Milestone deliverables are text-only; IPFS integration is future work.
+
