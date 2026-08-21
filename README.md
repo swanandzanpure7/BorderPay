@@ -183,7 +183,7 @@ All transactions on Stellar Testnet — verifiable on [stellar.expert](https://s
 | # | Action | Tx Hash | Explorer |
 |---|--------|---------|----------|
 | 1 | `create_job` | `96e4ef2f...e3ed8` | [↗](https://stellar.expert/explorer/testnet/tx/96e4ef2f889821a0d7eabc8b3d189391a2f23c5111c4b0d8e1819fda7a6e3ed8) |
-| 2 | `submit_milestone` | `3bf598338...98e4` | [↗](https://stellar.expert/explorer/testnet/tx/bf598338cae1c893c32f029cfcabd526561ace9768cc4195a52a421c5c5198e4) |
+| 2 | `submit_milestone` | `3sbf598338...98e4` | [↗](https://stellar.expert/explorer/testnet/tx/bf598338cae1c893c32f029cfcabd526561ace9768cc4195a52a421c5c5198e4) |
 | 3 | `approve_milestone` | `c598fdb7...43a1` | [↗](https://stellar.expert/explorer/testnet/tx/c598fdb72cc364e21e3c36b4ee5aecfcfb48b0ab8e0d54a193db7cfe27d143a1) |
 
 ### User 2 — Sneha Bhambare · [Job #47](https://borderpay-azure.vercel.app/jobs/47)
@@ -275,6 +275,16 @@ All transactions on Stellar Testnet — verifiable on [stellar.expert](https://s
 | 1 | `create_job` | `dabe11a2...775b` | [↗](https://stellar.expert/explorer/testnet/tx/dabe11a24e04f5a6365d36adc990b623192541326ce08665cbce6b444017775b) |
 | 2 | `submit_milestone` | `ded1b61d...a6e` | [↗](https://stellar.expert/explorer/testnet/tx/ded1b61d647bb48966660ba375bce39d048e2dc9ab7edfb59ee163f175ec5a6e) |
 | 3 | `approve_milestone` | `43b26bde...826d` | [↗](https://stellar.expert/explorer/testnet/tx/43b26bdef52ae9f7f3d232c6d8c0f4c6d1e1ebde47c2eeec7b83fde54287826d) |
+
+### User 11 — Sahil Jagtap · [Job #55](https://borderpay-azure.vercel.app/jobs/55)
+
+**Wallet:** `GDT6YMIHPUG6V5DDP2N4L2RJVNXXG3EGXFIDTVWDH6BKRPWZUJR37LAF`
+
+| # | Action | Tx Hash | Explorer |
+|---|--------|---------|----------|
+| 1 | `create_job` | `bf21908d...79ba` | [↗](https://stellar.expert/explorer/testnet/tx/bf21908ddedbd70dc1601263b008fc463a924112458108da5b829279d3cb79ba) |
+| 2 | `submit_milestone` | `089a86b4...0e4` | [↗](https://stellar.expert/explorer/testnet/tx/089a86b412c64f14890a3e47f317242680356cf4e6f3df751bcac995fc07a0e4) |
+| 3 | `approve_milestone` | `c7c4d2a4...9517` | [↗](https://stellar.expert/explorer/testnet/tx/c7c4d2a447932920671c4355819ea249a1e1eb5642d990b9fd44b4ce69d39517) |
 
 ---
 
