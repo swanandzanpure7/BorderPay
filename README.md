@@ -174,26 +174,26 @@ npx vercel --prod
 
 ## Screenshots
 
-### Landing Page
-![Landing Page](https://borderpay-azure.vercel.app/og-preview.png)
+### Product UI & Mobile Responsive Design
 
-> Visit [borderpay-azure.vercel.app](https://borderpay-azure.vercel.app) to see the live UI.
+| Landing Page | Dashboard |
+|---|---|
+| ![Landing](public/screenshots/ui1.PNG) | ![Dashboard](public/screenshots/ui2.PNG) |
 
-**Key screens:**
-- `/` — Landing page with how-it-works flow
-- `/dashboard` — Job overview with client/freelancer split view
-- `/jobs/new` — Create & fund job form with milestone builder
-- `/jobs/[id]` — Job detail with milestone actions and transaction history
-- `/profile` — Wallet profile, USDC faucet, feedback
-- `/status` — Platform health, contract info, job statistics
+| Post a Job | Job Detail |
+|---|---|
+| ![New Job](public/screenshots/ui3.PNG) | ![Job Detail](public/screenshots/ui4.PNG) |
 
-### Mobile Responsive
-The UI is fully responsive using Tailwind CSS — tested on 375px (iPhone SE), 768px (iPad), and 1440px (desktop). All pages use `max-w-*` containers with `px-4 sm:px-6 lg:px-8` spacing.
+| Profile & USDC Faucet |
+|---|
+| ![Profile](public/screenshots/ui5.PNG) |
+
+All pages are fully mobile responsive using Tailwind CSS — tested on 375px (iPhone SE), 768px (iPad), and 1440px (desktop). Every page uses `max-w-*` containers with `px-4 sm:px-6 lg:px-8` adaptive spacing.
 
 ### Analytics & Monitoring
-- **Sentry** — error tracking configured via `sentry.client.config.ts` and `sentry.server.config.ts`
-- **PostHog** — user analytics tracking `job_created`, `job_funded`, `milestone_submitted`, `milestone_approved` events
-- **`/status` page** — live contract health dashboard showing RPC connectivity, job counts, and feedback summary
+- **Sentry** — error tracking via `sentry.client.config.ts` and `sentry.server.config.ts`
+- **PostHog** — user event analytics tracking `job_created`, `job_funded`, `milestone_submitted`, `milestone_approved`
+- **`/status` page** — live contract health dashboard: RPC connectivity, total jobs, feedback summary
 
 ---
 
