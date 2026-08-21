@@ -216,6 +216,16 @@ All transactions on Stellar Testnet — verifiable on [stellar.expert](https://s
 | 2 | `submit_milestone` | `7e772724...9a73` | [↗](https://stellar.expert/explorer/testnet/tx/7e7727242eaef0f1116d742295dfd9e0ff8f841b0264cae6298933ccd44f9a73) |
 | 3 | `approve_milestone` | `be31c244...1343` | [↗](https://stellar.expert/explorer/testnet/tx/be31c24438165c2252b398ddae5b6e232b3c43e0bd4dad46b78caf5471e11343) |
 
+### User 5 — Sakib Inamdar · [Job #49](https://borderpay-azure.vercel.app/jobs/49)
+
+**Wallet:** `GC7PLHEA4232X6DOOXZUZT3BP6LSTQI7AEMHTIQS47K6AWRPBZJK2C2M`
+
+| # | Action | Tx Hash | Explorer |
+|---|--------|---------|----------|
+| 1 | `create_job` | `235e1270...f6c0` | [↗](https://stellar.expert/explorer/testnet/tx/235e127002cc7eaa671d4437b32c74762b4e08726cfa07c8f871a7bc4db8f6c0) |
+| 2 | `submit_milestone` | `80be3477...9e8e` | [↗](https://stellar.expert/explorer/testnet/tx/80be3477cefd90264dce54029dde83f8d137ae4f907513e269c2a3cd14d79e8e) |
+| 3 | `approve_milestone` | `cacb2332...35e5` | [↗](https://stellar.expert/explorer/testnet/tx/cacb23321864aeda54cea268dc556406b864f4c5a5a7893f6b6aaa322ac735e5) |
+
 ---
 
 ## Known Limitations & Future Work
