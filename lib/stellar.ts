@@ -510,6 +510,19 @@ export async function refundJob(
   return { refundAmount, txHash };
 }
 
+/** Retry helper for RPC calls that may transiently fail */
+async function withRetry<T>(fn: () => Promise<T>, retries = 2): Promise<T> {
+  for (let i = 0; i <= retries; i++) {
+    try {
+      return await fn();
+    } catch (err) {
+      if (i === retries) throw err;
+      await new Promise(r => setTimeout(r, 1500 * (i + 1)));
+    }
+  }
+  throw new Error("unreachable");
+}
+
 // Stable funded testnet account used for read-only simulations
 // (our distributor account — always funded)
 const READ_ONLY_ACCOUNT = "GCJZW42CHS33GIQSEELBQU5EBW2E6674Y67OSSLHUYV7G2V3IQOBZZEY";
