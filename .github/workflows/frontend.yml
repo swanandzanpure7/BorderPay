@@ -54,13 +54,14 @@ jobs:
         continue-on-error: true
 
       - name: Build (Next.js)
-        run: npm run build
+        run: npm run build:fast
         env:
-          # Stub env vars so the build succeeds without real secrets
-          DATABASE_URL: "postgresql://placeholder:placeholder@localhost:5432/placeholder"
+          # Stub env vars — no real DB connection needed for a build
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/borderpay"
           NEXT_PUBLIC_STELLAR_NETWORK_PASSPHRASE: "Test SDF Network ; September 2015"
           NEXT_PUBLIC_SOROBAN_RPC_URL: "https://soroban-testnet.stellar.org"
           NEXT_PUBLIC_ESCROW_CONTRACT_ID: "CBUBO5S57IZTIWU4BQXGJP2VAUD7CK7N5EXWFZQGKGMFZENL2F5Z4DTT"
           NEXT_PUBLIC_USDC_TOKEN_ID: "CDRIM3DJHXSGQSFCUDNYZZWMQKUSJYBACQTI5IZ275SPNTG5T7OYFWAL"
           NEXT_PUBLIC_APP_URL: "https://borderpay-azure.vercel.app"
           SENTRY_SUPPRESS_TURBOPACK_WARNING: "1"
+          SENTRY_SUPPRESS_GLOBAL_ERROR_HANDLER_FILE_WARNING: "1"
