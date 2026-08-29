@@ -1,8 +1,8 @@
 #![no_std]
 
 use soroban_sdk::{
-    contract, contractevent, contractimpl, contracttype, token, Address, Env, String, Symbol, Vec,
-    contracterror,
+    contract, contracterror, contractevent, contractimpl, contracttype, token, Address, Env,
+    String, Symbol, Vec,
 };
 
 // ─── Error Types ─────────────────────────────────────────────────────────────
@@ -220,12 +220,7 @@ impl EscrowContract {
     }
 
     /// Client deposits stablecoin equal to total_amount into escrow.
-    pub fn fund_job(
-        env: Env,
-        job_id: u64,
-        from: Address,
-        amount: i128,
-    ) -> Result<(), Error> {
+    pub fn fund_job(env: Env, job_id: u64, from: Address, amount: i128) -> Result<(), Error> {
         from.require_auth();
 
         let mut job: Job = env
@@ -473,11 +468,7 @@ impl EscrowContract {
 
         if refund_amount > 0 {
             let token_client = token::Client::new(&env, &job.token);
-            token_client.transfer(
-                &env.current_contract_address(),
-                &client,
-                &refund_amount,
-            );
+            token_client.transfer(&env.current_contract_address(), &client, &refund_amount);
         }
 
         job.milestones = updated_milestones;

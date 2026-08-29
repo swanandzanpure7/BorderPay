@@ -1,11 +1,8 @@
 #![cfg(test)]
 
 use super::*;
-use soroban_sdk::{
-    testutils::Address as _,
-    vec, Address, Env, String,
-};
 use soroban_sdk::token::{StellarAssetClient, TokenClient};
+use soroban_sdk::{testutils::Address as _, vec, Address, Env, String};
 
 fn create_test_env() -> (Env, Address, Address, Address, Address) {
     let env = Env::default();
@@ -16,7 +13,9 @@ fn create_test_env() -> (Env, Address, Address, Address, Address) {
     let client_addr = Address::generate(&env);
     let freelancer_addr = Address::generate(&env);
 
-    let token_id = env.register_stellar_asset_contract_v2(token_admin.clone()).address();
+    let token_id = env
+        .register_stellar_asset_contract_v2(token_admin.clone())
+        .address();
 
     let token_admin_client = StellarAssetClient::new(&env, &token_id);
     token_admin_client.mint(&client_addr, &10_000_i128);
@@ -163,12 +162,8 @@ fn test_no_milestones_error() {
     let (env, contract_id, token_id, client_addr, freelancer_addr) = create_test_env();
     let contract = EscrowContractClient::new(&env, &contract_id);
 
-    let result = contract.try_create_job(
-        &client_addr,
-        &freelancer_addr,
-        &token_id,
-        &Vec::new(&env),
-    );
+    let result =
+        contract.try_create_job(&client_addr, &freelancer_addr, &token_id, &Vec::new(&env));
     assert!(result.is_err());
 }
 
