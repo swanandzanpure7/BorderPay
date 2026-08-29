@@ -1,0 +1,68 @@
+name: Frontend CI
+
+on:
+  push:
+    branches: ["main", "master"]
+    paths:
+      - "app/**"
+      - "components/**"
+      - "lib/**"
+      - "public/**"
+      - "prisma/**"
+      - "*.json"
+      - "*.mjs"
+      - "*.ts"
+      - ".github/workflows/frontend.yml"
+  pull_request:
+    branches: ["main", "master"]
+    paths:
+      - "app/**"
+      - "components/**"
+      - "lib/**"
+      - "public/**"
+      - "prisma/**"
+      - "*.json"
+      - "*.mjs"
+      - "*.ts"
+      - ".github/workflows/frontend.yml"
+
+jobs:
+  lint-and-build:
+    name: Lint & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+        env:
+          DATABASE_URL: "postgresql://placeholder:placeholder@localhost:5432/placeholder"
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Type-check
+        run: npx tsc --noEmit
+
+      - name: Build (Next.js)
+        run: npm run build
+        env:
+          # Stub env vars so the build succeeds without real secrets
+          DATABASE_URL: "postgresql://placeholder:placeholder@localhost:5432/placeholder"
+          NEXT_PUBLIC_STELLAR_NETWORK_PASSPHRASE: "Test SDF Network ; September 2015"
+          NEXT_PUBLIC_SOROBAN_RPC_URL: "https://soroban-testnet.stellar.org"
+          NEXT_PUBLIC_ESCROW_CONTRACT_ID: "CBUBO5S57IZTIWU4BQXGJP2VAUD7CK7N5EXWFZQGKGMFZENL2F5Z4DTT"
+          NEXT_PUBLIC_USDC_TOKEN_ID: "CDRIM3DJHXSGQSFCUDNYZZWMQKUSJYBACQTI5IZ275SPNTG5T7OYFWAL"
+          NEXT_PUBLIC_APP_URL: "https://borderpay-azure.vercel.app"
+          SENTRY_SUPPRESS_TURBOPACK_WARNING: "1"

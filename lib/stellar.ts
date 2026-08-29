@@ -50,6 +50,10 @@ export const MAX_MILESTONES = 50;
 /** Min USDC per milestone in display units */
 export const MIN_MILESTONE_USDC = 0.01;
 
+// ─── RPC Server ──────────────────────────────────────────────────────────────
+
+export const server = new SorobanRpc.Server(RPC_URL, { allowHttp: false });
+
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 export type SignTransactionFn = (

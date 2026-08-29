@@ -1,0 +1,73 @@
+name: Smart Contract CI
+
+on:
+  push:
+    branches: ["main", "master"]
+    paths:
+      - "contracts/**"
+      - ".github/workflows/contracts.yml"
+  pull_request:
+    branches: ["main", "master"]
+    paths:
+      - "contracts/**"
+      - ".github/workflows/contracts.yml"
+
+env:
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: "-D warnings"
+
+jobs:
+  build-and-test:
+    name: Build, Test & Lint
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: contracts
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust stable toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+          targets: wasm32v1-none
+
+      - name: Cache Cargo registry and build artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            contracts/target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('contracts/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Install Stellar CLI
+        run: |
+          cargo install --locked stellar-cli --features opt
+
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+
+      - name: Run Clippy (deny warnings)
+        run: cargo clippy --all-targets --all-features -- -D warnings
+
+      - name: Build contract (native, for tests)
+        run: cargo build --all
+
+      - name: Run unit tests
+        run: cargo test --all
+
+      - name: Build contract (Wasm release)
+        run: stellar contract build
+
+      - name: Upload compiled Wasm artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: escrow-wasm
+          path: contracts/target/wasm32v1-none/release/*.wasm
+          if-no-files-found: error

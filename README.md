@@ -4,6 +4,8 @@
 
 [![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://borderpay-azure.vercel.app)
 [![Stellar Testnet](https://img.shields.io/badge/network-testnet-blue)](https://stellar.org)
+[![Smart Contract CI](https://github.com/swanandzanpure7/BorderPay/actions/workflows/contracts.yml/badge.svg)](https://github.com/swanandzanpure7/BorderPay/actions/workflows/contracts.yml)
+[![Frontend CI](https://github.com/swanandzanpure7/BorderPay/actions/workflows/frontend.yml/badge.svg)](https://github.com/swanandzanpure7/BorderPay/actions/workflows/frontend.yml)
 
 ---
 
@@ -93,14 +95,14 @@ Off-chain (for metadata only):
 ### Prerequisites
 
 - Node.js 18+
-- Rust + `wasm32-unknown-unknown` target
-- Stellar CLI 26+
+- Rust + `wasm32v1-none` target (`rustup target add wasm32v1-none`)
+- Stellar CLI 22+
 - Freighter wallet browser extension
 
 ### Clone & Install
 
 ```bash
-git clone https://github.com/your-org/borderpay
+git clone https://github.com/swanandzanpure7/BorderPay
 cd borderpay
 npm install
 ```
@@ -128,13 +130,13 @@ cargo test
 ### Build & Deploy Contract
 
 ```bash
-rustup target add wasm32-unknown-unknown
+rustup target add wasm32v1-none
 cd contracts
 stellar contract build
 stellar keys generate borderpay-deployer --network testnet
 stellar keys fund borderpay-deployer --network testnet
 stellar contract deploy \
-  --wasm target/wasm32-unknown-unknown/release/borderpay_escrow.wasm \
+  --wasm target/wasm32v1-none/release/escrow.wasm \
   --source borderpay-deployer \
   --network testnet
 ```
@@ -150,6 +152,54 @@ npx prisma migrate dev
 ```bash
 npx vercel --prod
 ```
+
+---
+
+## CI/CD
+
+Two GitHub Actions workflows run automatically on every push and pull request to `main`/`master`.
+
+### Smart Contract CI — `.github/workflows/contracts.yml`
+
+Triggers on any change inside `contracts/`.
+
+| Step | Command | Purpose |
+|------|---------|---------|
+| Toolchain | `dtolnay/rust-toolchain@stable` | Installs Rust stable + clippy + rustfmt + `wasm32v1-none` target |
+| Cache | `actions/cache@v4` | Caches Cargo registry and build artefacts |
+| Install Stellar CLI | `cargo install --locked stellar-cli --features opt` | Required for `stellar contract build` |
+| Format check | `cargo fmt --all -- --check` | Fails on unformatted code |
+| Clippy | `cargo clippy --all-targets --all-features -- -D warnings` | Lints with warnings as errors |
+| Unit tests | `cargo test --all` | Runs all tests in `src/test.rs` |
+| Wasm build | `stellar contract build` | Compiles the release `.wasm` artefact |
+| Upload artefact | `actions/upload-artifact@v4` | Attaches the `.wasm` to the CI run |
+
+### Frontend CI — `.github/workflows/frontend.yml`
+
+Triggers on any change to `app/`, `components/`, `lib/`, `prisma/`, or root config files.
+
+| Step | Command | Purpose |
+|------|---------|---------|
+| Install | `npm ci` | Reproducible dependency install |
+| Prisma generate | `npx prisma generate` | Generates typed DB client |
+| Lint | `npm run lint` | ESLint across all source files |
+| Type-check | `npx tsc --noEmit` | Full TypeScript type validation |
+| Build | `npm run build` | Next.js production build |
+
+### Smart Contract Test Coverage
+
+All tests live in `contracts/contracts/escrow/src/test.rs` and run with `cargo test`.
+
+| Test | What it verifies |
+|------|-----------------|
+| `test_happy_path` | Full lifecycle: create → fund → 3× submit + approve → `Completed`, freelancer balance = 3500 |
+| `test_unauthorized_submit` | Attacker calling `submit_milestone` is rejected |
+| `test_double_release_rejected` | Approving the same milestone twice is rejected |
+| `test_refund_path` | Approve first milestone, then refund — client gets 2500 back, job `Cancelled` |
+| `test_insufficient_funding_rejected` | `fund_job` with wrong amount is rejected |
+| `test_reject_milestone_dispute` | Rejected milestone moves to `Disputed`, funds stay locked |
+| `test_no_milestones_error` | Creating a job with zero milestones is rejected |
+| `test_list_jobs_by_address` | Both client and freelancer IDs appear in `list_jobs_by_address` |
 
 ---
 
