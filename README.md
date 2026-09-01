@@ -13,17 +13,17 @@
 
 ### The Problem
 
-Cross-border freelance payments are broken. Wire transfers take days and cost $30+. Clients default after work is delivered. Freelancers disappear after receiving upfront payment. There's no enforceable contract between strangers who have never met.
+Cross-border freelance payments are broken. Wire transfers take days and cost $30+. Clients default after work is delivered. Freelancers disappear after receiving upfront payment. There is no enforceable contract between strangers who have never met.
 
 ### The Solution
 
 BorderPay puts payment in a tamper-proof Soroban smart contract (escrow) on the Stellar network. The flow:
 
 1. Client creates a job with N milestones (amount + description each)
-2. Client deposits stablecoin (USDC) into the escrow — funds are now locked
+2. Client deposits USDC into the escrow — funds are locked on-chain
 3. Freelancer completes work → marks milestone as "submitted"
-4. Client reviews → approves → contract instantly releases that milestone's funds
-5. Rejected/disputed milestones stay locked until resolved; client can refund unreleased escrow
+4. Client reviews → approves → contract instantly releases that milestone's USDC
+5. Disputed milestones stay locked; client can refund unreleased escrow at any time
 
 No banks. No delays. No trust required between strangers.
 
@@ -31,8 +31,18 @@ No banks. No delays. No trust required between strangers.
 
 - **5-second finality** — payments settle in seconds, not days
 - **Sub-cent fees** — Stellar transaction fees are fractions of a cent
-- **Native stablecoin support** — USDC runs natively on Stellar via the Stellar Asset Contract
+- **Native stablecoin support** — USDC runs natively via the Stellar Asset Contract (SAC)
 - **Soroban smart contracts** — programmable escrow logic with full on-chain state
+
+---
+
+## Live Demo
+
+🌐 **[borderpay-azure.vercel.app](https://borderpay-azure.vercel.app)**
+
+📹 **[Demo Video](https://www.loom.com/share/7fabafb4e39c4998a7f658df07ffed69)** — full walkthrough: wallet connect → create job → fund escrow → submit milestone → approve & release payment
+
+> **11 real users · 33+ on-chain transactions · $0.00 in fees**
 
 ---
 
@@ -47,9 +57,9 @@ No banks. No delays. No trust required between strangers.
                              │ signed XDR transactions
                              ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                    @stellar/stellar-sdk                          │
+│                    @stellar/stellar-sdk v12                      │
 │           lib/stellar.ts (single integration layer)             │
-│   build tx → simulate → sign → submit → poll confirmation       │
+│   build tx → simulate → assemble → sign → submit → poll         │
 └────────────────────────────┬────────────────────────────────────┘
                              │
                              ▼
@@ -61,15 +71,15 @@ No banks. No delays. No trust required between strangers.
                              ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │              Soroban Escrow Contract (Rust)                      │
-│   contracts/escrow/src/lib.rs                                   │
+│   contracts/contracts/escrow/src/lib.rs                         │
 │   Jobs · Milestones · Auth · Token transfers · Events           │
 └─────────────────────────────────────────────────────────────────┘
 
-Off-chain (for metadata only):
+Off-chain metadata layer:
 ┌─────────────────────────────────────────────────────────────────┐
 │        Next.js API Routes  ←→  Prisma  ←→  Postgres (Supabase)  │
 │   /api/jobs · /api/feedback · /api/status · /api/users          │
-│   Job titles/descriptions · Feedback ratings · Tx history       │
+│   Job titles · Feedback ratings · Tx history                    │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -86,7 +96,39 @@ Off-chain (for metadata only):
 | Smart Contract | Soroban (Rust), `soroban-sdk` v22 |
 | Database | Postgres via Supabase, Prisma ORM |
 | Monitoring | Sentry (errors), PostHog (analytics) |
-| Deployment | Vercel (frontend), Stellar Testnet (contract) |
+| Deployment | Vercel (frontend + CI), Stellar Testnet (contract) |
+
+---
+
+## Screenshots
+
+### UI — Redesigned for Rise In Stellar Hackathon
+
+| Landing Page | Dashboard |
+|---|---|
+| ![Landing](public/screenshots/ui1.PNG) | ![Dashboard](public/screenshots/ui2.PNG) |
+
+| Post a Job | Job Detail |
+|---|---|
+| ![New Job](public/screenshots/ui3.PNG) | ![Job Detail](public/screenshots/ui4.PNG) |
+
+| Profile & USDC Faucet |
+|---|
+| ![Profile](public/screenshots/ui5.PNG) |
+
+**UI highlights:**
+- Hero with live stats (11 users · 33+ txs · $0 fees), gradient headline, real proof-of-work jobs section
+- Dashboard with 4-stat summary row (total / active / completed / USDC value), gradient accent job cards
+- Job detail with colour-coded milestone left-bar, stat cards, gradient progress bar, on-chain proof panel
+- New job form with 2-step progress indicator and numbered milestone circles
+- Status badges with dot indicators (pulsing on InProgress), border styles
+- 3-column footer with brand, nav links, Stellar explorer links
+- Fully mobile responsive (375px → 1440px)
+
+### Analytics & Monitoring
+- **Sentry** — error tracking via `sentry.client.config.ts` and `sentry.server.config.ts`
+- **PostHog** — user event analytics: `job_created`, `job_funded`, `milestone_submitted`, `milestone_approved`
+- **`/status` page** — live contract health dashboard: RPC status, job stats by status, feedback summary
 
 ---
 
@@ -103,7 +145,7 @@ Off-chain (for metadata only):
 
 ```bash
 git clone https://github.com/swanandzanpure7/BorderPay
-cd borderpay
+cd BorderPay
 npm install
 ```
 
@@ -113,6 +155,16 @@ npm install
 cp .env.local.example .env.local
 # Fill in values — see .env.local.example for all keys
 ```
+
+Key variables:
+
+| Variable | Description |
+|---|---|
+| `DATABASE_URL` | Supabase Postgres connection string |
+| `NEXT_PUBLIC_ESCROW_CONTRACT_ID` | Deployed Soroban contract address |
+| `NEXT_PUBLIC_USDC_TOKEN_ID` | USDC SAC address on testnet |
+| `NEXT_PUBLIC_SOROBAN_RPC_URL` | Stellar testnet RPC endpoint |
+| `FAUCET_SECRET` | Funded testnet account for USDC faucet |
 
 ### Run Locally
 
@@ -157,7 +209,7 @@ npx vercel --prod
 
 ## CI/CD
 
-Two GitHub Actions workflows run automatically on every push and pull request to `main`/`master`.
+Two GitHub Actions workflows run automatically on every push and pull request.
 
 ### Smart Contract CI — `.github/workflows/contracts.yml`
 
@@ -165,14 +217,13 @@ Triggers on any change inside `contracts/`.
 
 | Step | Command | Purpose |
 |------|---------|---------|
-| Toolchain | `dtolnay/rust-toolchain@stable` | Installs Rust stable + clippy + rustfmt + `wasm32v1-none` target |
+| Toolchain | `dtolnay/rust-toolchain@stable` | Installs Rust stable + clippy + rustfmt + `wasm32v1-none` |
 | Cache | `actions/cache@v4` | Caches Cargo registry and build artefacts |
-| Install Stellar CLI | `cargo install --locked stellar-cli --features opt` | Required for `stellar contract build` |
-| Format check | `cargo fmt --all -- --check` | Fails on unformatted code |
-| Clippy | `cargo clippy --all-targets --all-features -- -D warnings` | Lints with warnings as errors |
-| Unit tests | `cargo test --all` | Runs all tests in `src/test.rs` |
-| Wasm build | `stellar contract build` | Compiles the release `.wasm` artefact |
-| Upload artefact | `actions/upload-artifact@v4` | Attaches the `.wasm` to the CI run |
+| Format check | `cargo fmt --all -- --check` | Enforces code formatting |
+| Clippy | `cargo clippy --all-targets -- -D warnings` | Lints the contract |
+| Unit tests | `cargo test --all` | Runs all 8 tests in `src/test.rs` |
+| Wasm build | `cargo build --target wasm32v1-none --release` | Compiles release `.wasm` |
+| Upload artefact | `actions/upload-artifact@v4` | Attaches `.wasm` to the CI run |
 
 ### Frontend CI — `.github/workflows/frontend.yml`
 
@@ -180,11 +231,10 @@ Triggers on any change to `app/`, `components/`, `lib/`, `prisma/`, or root conf
 
 | Step | Command | Purpose |
 |------|---------|---------|
-| Install | `npm ci` | Reproducible dependency install |
+| Install | `npm install` | Install all dependencies |
 | Prisma generate | `npx prisma generate` | Generates typed DB client |
 | Lint | `npm run lint` | ESLint across all source files |
-| Type-check | `npx tsc --noEmit` | Full TypeScript type validation |
-| Build | `npm run build` | Next.js production build |
+| Build | `npx next build --no-lint` | Next.js production build |
 
 ### Smart Contract Test Coverage
 
@@ -195,7 +245,7 @@ All tests live in `contracts/contracts/escrow/src/test.rs` and run with `cargo t
 | `test_happy_path` | Full lifecycle: create → fund → 3× submit + approve → `Completed`, freelancer balance = 3500 |
 | `test_unauthorized_submit` | Attacker calling `submit_milestone` is rejected |
 | `test_double_release_rejected` | Approving the same milestone twice is rejected |
-| `test_refund_path` | Approve first milestone, then refund — client gets 2500 back, job `Cancelled` |
+| `test_refund_path` | Approve first milestone then refund — client gets 2500 back, job `Cancelled` |
 | `test_insufficient_funding_rejected` | `fund_job` with wrong amount is rejected |
 | `test_reject_milestone_dispute` | Rejected milestone moves to `Disputed`, funds stay locked |
 | `test_no_milestones_error` | Creating a job with zero milestones is rejected |
@@ -210,40 +260,22 @@ All tests live in `contracts/contracts/escrow/src/test.rs` and run with `cargo t
 | **Contract ID** | `CBUBO5S57IZTIWU4BQXGJP2VAUD7CK7N5EXWFZQGKGMFZENL2F5Z4DTT` |
 | **USDC Token SAC** | `CDRIM3DJHXSGQSFCUDNYZZWMQKUSJYBACQTI5IZ275SPNTG5T7OYFWAL` |
 | **Network** | Stellar Testnet |
-| **Explorer** | [View Contract](https://stellar.expert/explorer/testnet/contract/CBUBO5S57IZTIWU4BQXGJP2VAUD7CK7N5EXWFZQGKGMFZENL2F5Z4DTT) |
+| **Explorer** | [View Contract ↗](https://stellar.expert/explorer/testnet/contract/CBUBO5S57IZTIWU4BQXGJP2VAUD7CK7N5EXWFZQGKGMFZENL2F5Z4DTT) |
 
 ---
 
-## Live Demo
+## Contract Functions
 
-🌐 **[borderpay-azure.vercel.app](https://borderpay-azure.vercel.app)**
-
-📹 **[Demo Video](https://www.loom.com/share/7fabafb4e39c4998a7f658df07ffed69)** — full walkthrough: wallet connect → create job → fund escrow → submit milestone → approve & release payment
-
----
-
-## Screenshots
-
-### Product UI & Mobile Responsive Design
-
-| Landing Page | Dashboard |
-|---|---|
-| ![Landing](public/screenshots/ui1.PNG) | ![Dashboard](public/screenshots/ui2.PNG) |
-
-| Post a Job | Job Detail |
-|---|---|
-| ![New Job](public/screenshots/ui3.PNG) | ![Job Detail](public/screenshots/ui4.PNG) |
-
-| Profile & USDC Faucet |
-|---|
-| ![Profile](public/screenshots/ui5.PNG) |
-
-All pages are fully mobile responsive using Tailwind CSS — tested on 375px (iPhone SE), 768px (iPad), and 1440px (desktop). Every page uses `max-w-*` containers with `px-4 sm:px-6 lg:px-8` adaptive spacing.
-
-### Analytics & Monitoring
-- **Sentry** — error tracking via `sentry.client.config.ts` and `sentry.server.config.ts`
-- **PostHog** — user event analytics tracking `job_created`, `job_funded`, `milestone_submitted`, `milestone_approved`
-- **`/status` page** — live contract health dashboard: RPC connectivity, total jobs, feedback summary
+| Function | Caller | Description |
+|---|---|---|
+| `create_job(client, freelancer, token, milestones)` | Client | Creates job with N milestones, returns job ID |
+| `fund_job(job_id, from, amount)` | Client | Transfers exact USDC amount into escrow |
+| `submit_milestone(job_id, index, freelancer)` | Freelancer | Marks milestone as submitted for review |
+| `approve_milestone(job_id, index, client)` | Client | Releases milestone funds to freelancer |
+| `reject_milestone(job_id, index, client, reason)` | Client | Moves milestone to Disputed, funds stay locked |
+| `refund(job_id, client)` | Client | Returns all unreleased funds, cancels job |
+| `get_job(job_id)` | Anyone | Read job state from chain |
+| `list_jobs_by_address(address)` | Anyone | Get all job IDs for a wallet |
 
 ---
 
@@ -260,7 +292,7 @@ All transactions on Stellar Testnet — verifiable on [stellar.expert](https://s
 | # | Action | Tx Hash | Explorer |
 |---|--------|---------|----------|
 | 1 | `create_job` | `96e4ef2f...e3ed8` | [↗](https://stellar.expert/explorer/testnet/tx/96e4ef2f889821a0d7eabc8b3d189391a2f23c5111c4b0d8e1819fda7a6e3ed8) |
-| 2 | `submit_milestone` | `3sbf598338...98e4` | [↗](https://stellar.expert/explorer/testnet/tx/bf598338cae1c893c32f029cfcabd526561ace9768cc4195a52a421c5c5198e4) |
+| 2 | `submit_milestone` | `bf598338...98e4` | [↗](https://stellar.expert/explorer/testnet/tx/bf598338cae1c893c32f029cfcabd526561ace9768cc4195a52a421c5c5198e4) |
 | 3 | `approve_milestone` | `c598fdb7...43a1` | [↗](https://stellar.expert/explorer/testnet/tx/c598fdb72cc364e21e3c36b4ee5aecfcfb48b0ab8e0d54a193db7cfe27d143a1) |
 
 ### User 2 — Sneha Bhambare · [Job #47](https://borderpay-azure.vercel.app/jobs/47)
@@ -387,9 +419,9 @@ Collected via the in-app feedback modal (triggered on job completion) and the `/
 
 ## Known Limitations & Future Work
 
-- **Wallet support**: Freighter only. Albedo/xBull via Stellar Wallets Kit is future work.
-- **Dispute resolution**: Currently disputes lock funds indefinitely. A timelock + arbiter flow is planned.
-- **Factory pattern**: Single contract for all jobs. High-volume mainnet deployment would benefit from per-job contracts.
-- **Notifications**: No email/push notifications when milestone status changes.
-- **File attachments**: Milestone deliverables are text-only; IPFS integration is future work.
-
+- **Wallet support** — Freighter only. Albedo/xBull via Stellar Wallets Kit is planned.
+- **Dispute resolution** — Disputes currently lock funds indefinitely. A timelock + arbiter flow is planned.
+- **Factory pattern** — Single contract for all jobs. Per-job contracts would improve isolation at scale.
+- **Notifications** — No email/push notifications on milestone status changes.
+- **File attachments** — Milestone deliverables are text-only; IPFS integration is future work.
+- **Mainnet** — Currently testnet only. Mainnet deployment requires contract audit.
