@@ -1,8 +1,5 @@
 "use client";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
 import Link from "next/link";
 import { useWallet } from "@/lib/hooks/useWallet";
 import { useJobsByAddress } from "@/lib/hooks/useJob";

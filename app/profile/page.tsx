@@ -1,7 +1,5 @@
 "use client";
 
-export const dynamic = "force-dynamic";
-
 import { useState, useEffect } from "react";
 import { useWallet } from "@/lib/hooks/useWallet";
 import { useJobsByAddress } from "@/lib/hooks/useJob";
