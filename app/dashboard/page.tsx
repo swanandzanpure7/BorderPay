@@ -9,7 +9,6 @@ import { useJobsByAddress } from "@/lib/hooks/useJob";
 import { stroopsToUsdc, truncateAddress } from "@/lib/stellar";
 import { JobStatusBadge } from "@/components/ui/StatusBadge";
 import { Spinner } from "@/components/ui/Spinner";
-import { ErrorAlert } from "@/components/ui/ErrorAlert";
 import type { Job } from "@/lib/stellar";
 
 export default function DashboardPage() {
@@ -82,12 +81,20 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {error && (
-        <div className="mb-6">
-          <ErrorAlert
-            message="Failed to load jobs from chain. Check your connection."
-            onDismiss={() => refetch()}
-          />
+      {error && !isLoading && (
+        <div className="mb-6 rounded-2xl bg-amber-950/30 border border-amber-800/60 px-4 py-4 flex items-start justify-between gap-4">
+          <div>
+            <p className="text-sm font-medium text-amber-300">Could not load jobs from Stellar</p>
+            <p className="text-xs text-amber-400/70 mt-1">
+              The Stellar testnet RPC may be slow. Your jobs are still on-chain.
+            </p>
+          </div>
+          <button
+            onClick={() => refetch()}
+            className="btn-secondary text-xs py-1.5 px-3 shrink-0"
+          >
+            Retry
+          </button>
         </div>
       )}
 
